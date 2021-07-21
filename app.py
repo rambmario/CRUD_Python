@@ -28,6 +28,20 @@ def index():
 def create():
    return render_template('empleados/create.html')
 
+@app.route('/store', methods=['POST'])
+def storege():
+    _nombre=request.form['txtNombre']
+    _correo=request.form['txtCorreo']
+    _foto=request.files['txtFoto']
+
+    sql="INSERT INTO `empleados`(`id`, `nombre`, `correo`, `foto`) VALUES (NULL, %s, %s, %s);"
+    datos=(_nombre, _correo, _foto)
+    conn=mysql.connect()
+    cursor=conn.cursor()
+    cursor.execute(sql, datos)
+    conn.commit()
+    return render_template('empleados/index.html')
+
 if __name__ == '__main__':
     #DEBUG is SET to TRUE. CHANGE FOR PROD
     app.run(port=5000,debug=True)
